@@ -110,6 +110,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02db9885c724de44b80e2591f9dd2638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rightBound: 6
+  leftBound: -6
+  topBound: 4
+  botttomBound: -4
 --- !u!114 &230349911571764394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,10 +153,10 @@ MonoBehaviour:
     SynchronizeEnabled: 1
     TeleportEnabled: 1
     TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 2
+    InterpolateOption: 3
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 1
-    ExtrapolateOption: 0
+    ExtrapolateOption: 1
     ExtrapolateSpeed: 1
     ExtrapolateIncludingRoundTripTime: 1
     ExtrapolateNumberOfStoredPositions: 1
