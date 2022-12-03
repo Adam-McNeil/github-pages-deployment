@@ -6,9 +6,12 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using TMPro;
 
 public class JiraConnect : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI jiraText;
+
     private void Start()
     {
         // https://adam-mcneil.atlassian.net/rest/api/latest/issue/Test?-H \"Authorization: HebzeuStL2EU43ulUo46C682\"
@@ -18,11 +21,11 @@ public class JiraConnect : MonoBehaviour
         //string loginPassword = "something";
         string loginToken = "ZCwd7guPdWjfJyobV0cE3F49";
         // string loginAPI = "auth/latest/session/";
-        string getURL = "api/latest/issue/";
+        string getURL = "api/latest/search?name=yf";
 
 
-        //MakeJiraRequest(baseURL + getURL, loginUsername, loginToken);
-        MakeJiraTicket(baseURL + getURL, loginUsername, loginToken);
+        MakeJiraRequest(baseURL + getURL, loginUsername, loginToken);
+        //MakeJiraTicket(baseURL + getURL, loginUsername, loginToken);
         Console.ReadLine();
     }
 
@@ -60,6 +63,7 @@ public class JiraConnect : MonoBehaviour
         Stream responseStream = webResponse.GetResponseStream();
         StreamReader reader = new StreamReader(responseStream);
         string response = reader.ReadToEnd();
+        jiraText.text = response;
         Debug.Log(response);
     }
 }
