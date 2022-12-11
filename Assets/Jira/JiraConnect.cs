@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using TMPro;
+using Photon.Pun;
 
 public class JiraConnect : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class JiraConnect : MonoBehaviour
 
     public void OnRunButtonClick()
     {
-        MakeJiraRequest(APIInputField.text, emailInputField.text, tokenInputField.text);
+        MakeJiraRequestAsync(APIInputField.text, emailInputField.text, tokenInputField.text);
     }
 
     private void MakeJiraTicket(string URL, string username, string token)
@@ -42,18 +43,9 @@ public class JiraConnect : MonoBehaviour
         request.Method = "POST";
         Stream stream = request.GetRequestStream();
         stream.Write(byteArray, 0, byteArray.Length);
-
-        /*   WebRequest responseRequest = WebRequest.Create(URL);
-           responseRequest.Headers.Add("Authorization", "Basic " + encodedStr);
-           responseRequest.Method = "GET";
-           WebResponse webResponse = responseRequest.GetResponse();
-           Stream responseStream = webResponse.GetResponseStream();
-           StreamReader reader = new StreamReader(responseStream);
-           string response = reader.ReadToEnd();
-           Console.Write(response);*/
     }
 
-    private void MakeJiraRequest(string URL, string username, string token)
+    private async void MakeJiraRequestAsync(string URL, string username, string token)
     {
         // make data request
         try
@@ -62,7 +54,7 @@ public class JiraConnect : MonoBehaviour
             string encodedStr = Convert.ToBase64String(Encoding.GetEncoding("UTF-8").GetBytes(username + ":" + token));
             issueRequest.Headers.Add("Authorization", "Basic " + encodedStr);
             issueRequest.Method = "GET";
-            WebResponse webResponse = issueRequest.GetResponse();
+            WebResponse webResponse = await Task.Run(() => issueRequest.GetResponse());
             Stream responseStream = webResponse.GetResponseStream();
             StreamReader reader = new StreamReader(responseStream);
             string response = reader.ReadToEnd();
@@ -74,5 +66,6 @@ public class JiraConnect : MonoBehaviour
             jiraText.text = ex.Message;
         }
     }
+
 }
 
