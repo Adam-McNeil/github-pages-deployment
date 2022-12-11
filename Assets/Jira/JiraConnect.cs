@@ -8,22 +8,25 @@ using System.Threading.Tasks;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using System.Runtime.InteropServices;
 
 public class JiraConnect : MonoBehaviour
 {
+    // https://adam-mcneil.atlassian.net/rest/api/latest/issue/Test?-H 
+    // baseURL = "https://adam-mcneil.atlassian.net/rest/";
+    // getURL = "api/latest/search?name=yf";
+
     [SerializeField] private TextMeshProUGUI jiraText;
     [SerializeField] private TMP_InputField tokenInputField;
     [SerializeField] private TMP_InputField emailInputField;
     [SerializeField] private TMP_InputField APIInputField;
 
-    private void Start()
+    [DllImport("__Internal")]
+    private static extern void Hello();
+
+    public void OnErrorButtonClick()
     {
-        // https://adam-mcneil.atlassian.net/rest/api/latest/issue/Test?-H 
-        // baseURL = "https://adam-mcneil.atlassian.net/rest/";
-        // getURL = "api/latest/search?name=yf";
-
-
-        //MakeJiraTicket(baseURL + getURL, loginUsername, loginToken);
+        Hello();
     }
 
     public void OnRunButtonClick()
