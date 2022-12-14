@@ -9,6 +9,8 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using System.Runtime.InteropServices;
+using System.Collections;
+using UnityEngine.Networking;
 
 public class JiraConnect : MonoBehaviour
 {
@@ -21,17 +23,23 @@ public class JiraConnect : MonoBehaviour
     [SerializeField] private TMP_InputField emailInputField;
     [SerializeField] private TMP_InputField APIInputField;
 
+
     [DllImport("__Internal")]
-    private static extern void Hello();
+    private static extern void MakeJiraRequestJavaScript(string url, string encodedStr);
 
     public void OnErrorButtonClick()
     {
-        Hello();
+        //Hello();
     }
 
     public void OnRunButtonClick()
     {
-        MakeJiraRequestAsync(APIInputField.text, emailInputField.text, tokenInputField.text);
+        StartCoroutine(EnuJira(tokenInputField.text, emailInputField.text, APIInputField.text, jiraText, returnValue =>
+        {
+           
+        }
+        ));
+        
     }
 
     private void MakeJiraTicket(string URL, string username, string token)
@@ -68,6 +76,38 @@ public class JiraConnect : MonoBehaviour
         {
             jiraText.text = ex.Message;
         }
+    }
+
+    public static IEnumerator EnuJira(string token, string usename, string APIRequest, TextMeshProUGUI outputText, System.Action<string> callback = null)
+    {
+        string authCache = System.Convert.ToBase64String(Encoding.UTF8.GetBytes(usename + ":" + token));
+
+        UnityWebRequest request = UnityWebRequest.Get(APIRequest);
+        request.SetRequestHeader("Authorization", "Basic " + authCache);
+
+        yield return request.SendWebRequest();
+
+        if (request.isNetworkError || request.isHttpError)
+        {
+           /* Debug.Log("Error while Receiving: " + request.error);
+            string result = request.downloadHandler.text;
+            callback.Invoke(result);*/
+            yield return request.error;
+            callback.Invoke(request.error);
+        }
+        else
+        {
+            Debug.Log(request.downloadHandler.text);
+            outputText.text = request.downloadHandler.text;
+            string result = request.downloadHandler.text;
+            callback.Invoke(result);
+        }
+    }
+
+    private void CallJavaScriptFunction(string URL, string username, string token)
+    {
+        string encodedStr = Convert.ToBase64String(Encoding.GetEncoding("UTF-8").GetBytes(username + ":" + token));
+        MakeJiraRequestJavaScript(URL, encodedStr);
     }
 
 }
