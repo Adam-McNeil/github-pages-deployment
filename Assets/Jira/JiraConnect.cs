@@ -24,8 +24,6 @@ public class JiraConnect : MonoBehaviour
     [SerializeField] private TMP_InputField APIInputField;
 
 
-    [DllImport("__Internal")]
-    private static extern void MakeJiraRequestJavaScript(string url, string encodedStr);
 
     public void OnErrorButtonClick()
     {
@@ -84,6 +82,7 @@ public class JiraConnect : MonoBehaviour
 
         UnityWebRequest request = UnityWebRequest.Get(APIRequest);
         request.SetRequestHeader("Authorization", "Basic " + authCache);
+        request.SetRequestHeader("Access-Control-Allow-Origin", "*");
 
         yield return request.SendWebRequest();
 
@@ -104,11 +103,11 @@ public class JiraConnect : MonoBehaviour
         }
     }
 
-    private void CallJavaScriptFunction(string URL, string username, string token)
+/*    private void CallJavaScriptFunction(string URL, string username, string token)
     {
         string encodedStr = Convert.ToBase64String(Encoding.GetEncoding("UTF-8").GetBytes(username + ":" + token));
         MakeJiraRequestJavaScript(URL, encodedStr);
-    }
+    }*/
 
 }
 
