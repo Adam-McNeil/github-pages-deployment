@@ -11,6 +11,7 @@ using Photon.Pun;
 using System.Runtime.InteropServices;
 using System.Collections;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class JiraConnect : MonoBehaviour
 {
@@ -19,11 +20,15 @@ public class JiraConnect : MonoBehaviour
     // getURL = "api/latest/search?name=yf";
 
     [SerializeField] private TextMeshProUGUI jiraText;
-    [SerializeField] private TMP_InputField tokenInputField;
-    [SerializeField] private TMP_InputField emailInputField;
-    [SerializeField] private TMP_InputField APIInputField;
+    [SerializeField] private InputField tokenInputField;
+    [SerializeField] private InputField emailInputField;
+    [SerializeField] private InputField APIInputField;
 
-
+    public void Start()
+    {
+        emailInputField.text = "adamwmcneil@gmail.com";
+        APIInputField.text = "https://adam-mcneil.atlassian.net/rest/api/latest/search?name=yf";
+    }
 
     public void OnErrorButtonClick()
     {
