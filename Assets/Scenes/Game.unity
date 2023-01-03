@@ -206,7 +206,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1637001766}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: JiraConnect, Assembly-CSharp
         m_MethodName: OnErrorButtonClick
         m_Mode: 1
@@ -2044,8 +2044,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1637001766}
-        m_TargetAssemblyTypeName: JiraConnect, Assembly-CSharp
+      - m_Target: {fileID: 1637001767}
+        m_TargetAssemblyTypeName: ProxyConnectServer, Assembly-CSharp
         m_MethodName: OnRunButtonClick
         m_Mode: 1
         m_Arguments:
@@ -2103,7 +2103,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1637001765}
-  - component: {fileID: 1637001766}
+  - component: {fileID: 1637001767}
   m_Layer: 0
   m_Name: Jira Connect
   m_TagString: Untagged
@@ -2125,7 +2125,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1637001766
+--- !u!114 &1637001767
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2134,10 +2134,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1637001764}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b89619eca51fcf469a88e692e385ffd, type: 3}
+  m_Script: {fileID: 11500000, guid: 0eb767b31c6d2a145ad01961462755e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jiraText: {fileID: 1818013357}
+  outputText: {fileID: 1818013357}
   tokenInputField: {fileID: 479501912}
   emailInputField: {fileID: 1247605680}
   APIInputField: {fileID: 739948372}
@@ -2298,7 +2298,7 @@ GameObject:
   - component: {fileID: 1818013358}
   - component: {fileID: 1818013357}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Output Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

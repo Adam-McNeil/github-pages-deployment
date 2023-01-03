@@ -23,6 +23,20 @@ public class JiraConnect : MonoBehaviour
     [SerializeField] private InputField tokenInputField;
     [SerializeField] private InputField emailInputField;
     [SerializeField] private InputField APIInputField;
+    private string resultCode;
+
+    /// 
+    //https://auth.atlassian.com/authorize?
+    //audience=api.atlassian.com&
+    //client_id=FfkyEIIr4kd4acglG27fROkFl2scCKZK&
+    //scope=REQUESTED_SCOPE_ONE%20REQUESTED_SCOPE_TWO&
+    //redirect_uri=https://github.com/&
+    //
+    //response_type=code&
+    //prompt=consent
+
+
+        //https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=FfkyEIIr4kd4acglG27fROkFl2scCKZK&scope=read%3Ame&redirect_uri=https%3A%2F%2Fgithub.com%2F&state=${YOUR_USER_BOUND_VALUE}&response_type=code&prompt=consent
 
     public void Start()
     {
@@ -37,14 +51,87 @@ public class JiraConnect : MonoBehaviour
 
     public void OnRunButtonClick()
     {
-        StartCoroutine(EnuJira(tokenInputField.text, emailInputField.text, APIInputField.text, jiraText, returnValue =>
-        {
-           
-        }
-        ));
-        
+        StartCoroutine(Unity_Jira_Connect());
+        Debug.Log(resultCode);
+        //StartCoroutine(EnuJira(tokenInputField.text, emailInputField.text, APIInputField.text, jiraText, returnValue =>
+        //{
+        //   
+        //   
+        //}
+        //)); 
     }
 
+    private IEnumerator Unity_Jira_Connect()
+    {
+        UnityWebRequest request = UnityWebRequest.Get("https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=FfkyEIIr4kd4acglG27fROkFl2scCKZK&scope=read%3Ame&redirect_uri=https%3A%2F%2Fadam-mcneil.github.io%2Fgithub-pages-deployment%2F&state=${YOUR_USER_BOUND_VALUE}&response_type=code&prompt=consent");
+
+        yield return request.SendWebRequest();
+
+        if (request.isNetworkError || request.isHttpError)
+        {
+            Debug.Log(request.error);
+            yield return request.error;
+        }
+        else
+        {
+            Debug.Log(request.downloadHandler.text);
+            resultCode = request.downloadHandler.text;
+        }
+    }
+
+    public static IEnumerator EnuJira(string token, string usename, string APIRequest, TextMeshProUGUI outputText, System.Action<string> callback = null)
+    {
+        string authCache = System.Convert.ToBase64String(Encoding.UTF8.GetBytes(usename + ":" + token));
+
+        UnityWebRequest request = UnityWebRequest.Get(APIRequest);
+        request.SetRequestHeader("Authorization", "Basic " + authCache);
+        request.SetRequestHeader("Access-Control-Allow-Origin", "*");
+
+        yield return request.SendWebRequest();
+
+        if (request.isNetworkError || request.isHttpError)
+        {
+           /* Debug.Log("Error while Receiving: " + request.error);
+            string result = request.downloadHandler.text;
+            callback.Invoke(result);*/
+            yield return request.error;
+            callback.Invoke(request.error);
+        }
+        else
+        {
+            Debug.Log(request.downloadHandler.text);
+            outputText.text = request.downloadHandler.text;
+            string result = request.downloadHandler.text;
+            callback.Invoke(result);
+        }
+    }
+
+    struct PostData
+    {
+        // { 
+        //     "grant_type": "authorization_code",
+        //     "client_id": "YOUR_CLIENT_ID",
+        //     "client_secret": "YOUR_CLIENT_SECRET",
+        //     "code": "YOUR_AUTHORIZATION_CODE",
+        //     "redirect_uri": "https://adam-mcneil.github.io/github-pages-deployment/"
+        // }
+        string grant_type;
+        string client_id;
+        string client_secret;
+        string code;
+        string redirect_uri;
+
+        PostData(string gt, string ci, string cs, string c, string ru)
+        {
+            grant_type = gt;
+            client_id = ci;
+            client_secret = cs;
+            code = c;
+            redirect_uri = ru;
+        }
+    }
+
+    #region Old_Requests
     private void MakeJiraTicket(string URL, string username, string token)
     {
         string data = Console.ReadLine();
@@ -80,33 +167,8 @@ public class JiraConnect : MonoBehaviour
             jiraText.text = ex.Message;
         }
     }
+    #endregion
 
-    public static IEnumerator EnuJira(string token, string usename, string APIRequest, TextMeshProUGUI outputText, System.Action<string> callback = null)
-    {
-        string authCache = System.Convert.ToBase64String(Encoding.UTF8.GetBytes(usename + ":" + token));
-
-        UnityWebRequest request = UnityWebRequest.Get(APIRequest);
-        request.SetRequestHeader("Authorization", "Basic " + authCache);
-        request.SetRequestHeader("Access-Control-Allow-Origin", "*");
-
-        yield return request.SendWebRequest();
-
-        if (request.isNetworkError || request.isHttpError)
-        {
-           /* Debug.Log("Error while Receiving: " + request.error);
-            string result = request.downloadHandler.text;
-            callback.Invoke(result);*/
-            yield return request.error;
-            callback.Invoke(request.error);
-        }
-        else
-        {
-            Debug.Log(request.downloadHandler.text);
-            outputText.text = request.downloadHandler.text;
-            string result = request.downloadHandler.text;
-            callback.Invoke(result);
-        }
-    }
 
 /*    private void CallJavaScriptFunction(string URL, string username, string token)
     {
