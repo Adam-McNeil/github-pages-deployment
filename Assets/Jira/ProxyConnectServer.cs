@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEditor.Experimental.GraphView;
 
 public class ProxyConnectServer : MonoBehaviour
 {
@@ -20,10 +21,12 @@ public class ProxyConnectServer : MonoBehaviour
     [SerializeField] private InputField emailInputField;
     [SerializeField] private InputField APIInputField;
 
+    private static string proxyServer = "http://192.168.1.20:7777/jira-request/"; 
+
     public void Start()
     {
         emailInputField.text = "";
-        APIInputField.text = "localhost:1234/";
+        APIInputField.text = "";
     }
 
     public void OnErrorButtonClick()
@@ -35,15 +38,13 @@ public class ProxyConnectServer : MonoBehaviour
         StartCoroutine(EnuProxyServer(APIInputField.text, outputText));
     }
 
-    public static IEnumerator EnuProxyServer(string APIRequest, TextMeshProUGUI outputText)
+    public static IEnumerator EnuProxyServer(string jiraAPIEndpoint, TextMeshProUGUI outputText)
     {
+        Debug.Log(jiraAPIEndpoint);
+        UnityWebRequest request = UnityWebRequest.Post(proxyServer, "{\"endpoint\":\"" + jiraAPIEndpoint + "\"}");
+        request.SetRequestHeader("Content-Type", "application/json");
 
-        UnityWebRequest request = UnityWebRequest.Get(APIRequest);
-
-        Debug.Log("about to send message");
         yield return request.SendWebRequest();
-        Debug.Log("message sent");
-
 
         if (request.isNetworkError || request.isHttpError)
         {

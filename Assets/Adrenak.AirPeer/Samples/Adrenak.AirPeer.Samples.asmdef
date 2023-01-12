@@ -1,0 +1,19 @@
+{
+    "name": "Adrenak.AirPeer.Samples",
+    "rootNamespace": "",
+    "references": [
+        "Adrenak.AirPeer.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "WebGL",
+        "WindowsStandalone64"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

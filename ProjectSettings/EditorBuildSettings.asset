@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Adrenak.AirPeer/Samples/APNodeDemo.unity
+    guid: 76c61df9a3d5e45498db2352974ecc42
+  - enabled: 1
     path: Assets/Scenes/Loading.unity
     guid: 636427838f9c3e84b836333075ede9a8
   - enabled: 1
